@@ -82,7 +82,7 @@ export default function App() {
         {screen === "link" && <LinkScreen data={requestData} url={shareUrl} onBack={() => setScreen("create")} />}
         {screen === "recipient" && <RecipientScreen data={requestData} onYes={handleYes} onNo={() => setScreen("no")} />}
         {screen === "yes" && <YesScreen data={requestData} date={chosenDate} activity={chosenActivity} />}
-        {screen === "no" && <NoScreen senderName={requestData?.from} />}
+        {screen === "no" && <NoScreen data={requestData} />}
 
         <div style={{ textAlign: "center", marginTop: "48px", paddingTop: "24px", borderTop: "1px solid #1A1A1A" }}>
           <p style={{ fontSize: "16px", margin: "0 0 6px", opacity: 0.3 }}>🏍️ 📖</p>
