@@ -25,6 +25,8 @@ export default function App() {
         setRequestData(data);
         setIsRecipient(true);
         setScreen("recipient");
+      } else {
+        setScreen("invalid");
       }
     }
   }, []);
@@ -70,7 +72,7 @@ export default function App() {
         }}>
           <Logo />
           <span style={{ fontSize: "10px", color: "#3A3A3A", letterSpacing: "0.1em", fontFamily: "Georgia, serif", textTransform: "uppercase" }}>
-            {screen === "create" ? "Ride · Read" : screen === "link" ? "Ready" : screen === "recipient" ? "For you" : screen === "yes" ? "It's a date" : ""}
+            {screen === "create" ? "Ride · Read" : screen === "link" ? "Ready" : screen === "recipient" ? "For you" : screen === "yes" ? "It's a date" : screen === "invalid" ? "" : ""}
           </span>
         </div>
 
@@ -83,6 +85,25 @@ export default function App() {
         {screen === "recipient" && <RecipientScreen data={requestData} onYes={handleYes} onNo={() => setScreen("no")} />}
         {screen === "yes" && <YesScreen data={requestData} date={chosenDate} activity={chosenActivity} />}
         {screen === "no" && <NoScreen data={requestData} />}
+        {screen === "invalid" && (
+          <div style={{ animation: "fadeUp 0.5s ease both", textAlign: "center", padding: "60px 0" }}>
+            <div style={{ fontSize: "32px", marginBottom: "24px", opacity: 0.3 }}>📖</div>
+            <p style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "26px", color: "#E8E0D0", fontStyle: "italic", margin: "0 0 16px", lineHeight: 1.4 }}>
+              This invitation is no longer valid.
+            </p>
+            <p style={{ fontFamily: "'Crimson Text', Georgia, serif", fontSize: "16px", color: "#4A4A4A", lineHeight: 1.7, margin: "0 0 40px" }}>
+              The link may be incomplete or expired.<br />Ask the sender to share it again.
+            </p>
+            <button onClick={() => { window.location.hash = ""; setScreen("create"); }} style={{
+              background: "none", border: "1px solid #2A2A2A", borderRadius: "8px",
+              color: "#4A4A4A", fontFamily: "Georgia, serif", fontSize: "12px",
+              letterSpacing: "0.1em", textTransform: "uppercase", cursor: "pointer",
+              padding: "14px 24px"
+            }}>
+              Create a new invitation
+            </button>
+          </div>
+        )}
 
         <div style={{ textAlign: "center", marginTop: "48px", paddingTop: "24px", borderTop: "1px solid #1A1A1A" }}>
           <p style={{ fontSize: "16px", margin: "0 0 6px", opacity: 0.3 }}>🏍️ 📖</p>
