@@ -65,6 +65,10 @@ const LinkScreen = ({ data, url, onBack }) => {
         📱 Works best on mobile — the SMS reply requires a phone
       </p>
 
+      <p style={{ fontSize: "11px", color: "#3A3A3A", fontFamily: "Georgia, serif", letterSpacing: "0.08em", background: "#0D0D0D", border: "1px solid #1E1E1E", borderRadius: "6px", padding: "10px 14px", lineHeight: 1.6, marginTop: "10px" }}>
+        🔒 This link contains your phone number — only share it directly with {data.to}
+      </p>
+
       <button onClick={onBack} style={{
         background: "none", border: "none", color: "#4A4A4A", fontFamily: "Georgia, serif",
         fontSize: "12px", letterSpacing: "0.1em", textTransform: "uppercase", cursor: "pointer",
