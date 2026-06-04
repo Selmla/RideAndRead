@@ -51,8 +51,8 @@ const YesScreen = ({ data, date, activity }) => {
         </button>
       </div>
 
-      <div style={{ background: "#111", border: "1px solid #1E1E1E", borderLeft: "3px solid #6B1E1E", borderRadius: "8px", padding: "20px", marginBottom: "20px", textAlign: "left" }}>
-        <p style={{ fontSize: "10px", letterSpacing: "0.14em", color: "#6B1E1E", textTransform: "uppercase", fontFamily: "Georgia, serif", margin: "0 0 10px" }}>
+      <div style={{ background: "#181818", border: "1px solid #2A2A2A", borderLeft: "3px solid #6B1E1E", borderRadius: "8px", padding: "20px", marginBottom: "20px", textAlign: "left" }}>
+        <p style={{ fontSize: "10px", letterSpacing: "0.14em", color: "#C4956A", textTransform: "uppercase", fontFamily: "Georgia, serif", margin: "0 0 10px" }}>
           Send your answer
         </p>
         <p style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "15px", color: "#C4B89A", fontStyle: "italic", lineHeight: 1.6, margin: "0 0 16px" }}>
@@ -66,7 +66,7 @@ const YesScreen = ({ data, date, activity }) => {
           {canNativeShare ? "↗ Send reply" : `📱 Send SMS to ${data.from}`}
         </button>
         {!canNativeShare && (
-          <p style={{ fontSize: "11px", color: "#3A3A3A", fontFamily: "Georgia, serif", margin: "10px 0 0", textAlign: "center", fontStyle: "italic" }}>
+          <p style={{ fontSize: "11px", color: "#585858", fontFamily: "Georgia, serif", margin: "10px 0 0", textAlign: "center", fontStyle: "italic" }}>
             Works best on mobile
           </p>
         )}

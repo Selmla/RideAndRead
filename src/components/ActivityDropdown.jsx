@@ -25,24 +25,24 @@ const ActivityDropdown = ({ selected, onChange }) => {
   return (
     <div ref={el => ref.current = el} style={{ position: "relative" }}>
       <button onClick={() => setOpen(!open)} style={{
-        width: "100%", padding: "14px 18px", background: "#1A1A1A",
-        border: `1px solid ${open ? "#6B1E1E" : "#333"}`, borderRadius: "8px",
+        width: "100%", padding: "14px 18px", background: "#252525",
+        border: `1px solid ${open ? "#6B1E1E" : "#454545"}`, borderRadius: "8px",
         color: "#E8E0D0", fontFamily: "'Crimson Text', Georgia, serif", fontSize: "16px",
         cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center",
         transition: "border-color 0.2s"
       }}>
         <span>{selected.length === 0 ? "Choose up to 5 adventures..." : `${selected.length}/5 selected`}</span>
-        <span style={{ color: "#6B1E1E", transition: "transform 0.2s", transform: open ? "rotate(180deg)" : "none" }}>▾</span>
+        <span style={{ color: "#C4956A", transition: "transform 0.2s", transform: open ? "rotate(180deg)" : "none" }}>▾</span>
       </button>
 
       {open && (
         <div style={{
           position: "absolute", top: "calc(100% + 8px)", left: 0, right: 0, zIndex: 100,
-          background: "#141414", border: "1px solid #2A2A2A", borderRadius: "8px",
+          background: "#1E1E1E", border: "1px solid #383838", borderRadius: "8px",
           maxHeight: "360px", overflowY: "auto", boxShadow: "0 20px 60px rgba(0,0,0,0.8)"
         }}>
           {selected.length >= 5 && (
-            <div style={{ padding: "10px 16px", borderBottom: "1px solid #2A2A2A", display: "flex", justifyContent: "space-between", alignItems: "center", position: "sticky", top: 0, background: "#141414", zIndex: 1 }}>
+            <div style={{ padding: "10px 16px", borderBottom: "1px solid #383838", display: "flex", justifyContent: "space-between", alignItems: "center", position: "sticky", top: 0, background: "#1E1E1E", zIndex: 1 }}>
               <span style={{ fontSize: "12px", color: "#C4956A", fontFamily: "Georgia, serif", fontStyle: "italic" }}>5/5 — uncheck to swap</span>
               <button onClick={() => setOpen(false)} style={{
                 background: "#6B1E1E", border: "none", borderRadius: "4px", color: "#E8E0D0",
@@ -53,7 +53,7 @@ const ActivityDropdown = ({ selected, onChange }) => {
           )}
           {grouped.map(({ vibe, items }) => (
             <div key={vibe}>
-              <div style={{ padding: "10px 16px 6px", fontSize: "10px", letterSpacing: "0.12em", color: "#6B1E1E", fontFamily: "Georgia, serif", textTransform: "uppercase" }}>
+              <div style={{ padding: "10px 16px 6px", fontSize: "10px", letterSpacing: "0.12em", color: "#C4956A", fontFamily: "Georgia, serif", textTransform: "uppercase" }}>
                 {VIBE_LABELS[vibe]}
               </div>
               {items.map(a => {
@@ -64,11 +64,11 @@ const ActivityDropdown = ({ selected, onChange }) => {
                     padding: "12px 16px", display: "flex", alignItems: "center", gap: "12px",
                     cursor: isDisabled ? "not-allowed" : "pointer", opacity: isDisabled ? 0.35 : 1,
                     background: isSelected ? "rgba(107,30,30,0.25)" : "transparent",
-                    transition: "background 0.15s", borderBottom: "1px solid #1E1E1E"
+                    transition: "background 0.15s", borderBottom: "1px solid #2A2A2A"
                   }}>
                     <div style={{
                       width: "18px", height: "18px", borderRadius: "4px", flexShrink: 0,
-                      border: `1.5px solid ${isSelected ? "#6B1E1E" : "#444"}`,
+                      border: `1.5px solid ${isSelected ? "#6B1E1E" : "#555"}`,
                       background: isSelected ? "#6B1E1E" : "transparent",
                       display: "flex", alignItems: "center", justifyContent: "center",
                       transition: "all 0.15s"
@@ -96,7 +96,7 @@ const ActivityDropdown = ({ selected, onChange }) => {
                 fontFamily: "'Crimson Text', Georgia, serif", display: "flex", alignItems: "center", gap: "6px"
               }}>
                 {a.emoji} {a.label.split(" — ")[0].split(" or ")[0]}
-                <span style={{ color: "#6B1E1E", fontWeight: 700, marginLeft: "2px" }}>×</span>
+                <span style={{ color: "#C4956A", fontWeight: 700, marginLeft: "2px" }}>×</span>
               </span>
             );
           })}

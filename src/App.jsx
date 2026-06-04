@@ -45,33 +45,37 @@ export default function App() {
 
   return (
     <div style={{
-      minHeight: "100vh", background: "#0D0D0D", color: "#E8E0D0",
+      minHeight: "100vh", color: "#E8E0D0",
       fontFamily: "'Crimson Text', Georgia, serif",
-      backgroundImage: "radial-gradient(ellipse at 50% 0%, rgba(107,30,30,0.12) 0%, transparent 60%)"
+      background: "#0D0D0D",
+      backgroundImage: "linear-gradient(rgba(8,4,4,0.72) 0%, rgba(8,4,4,0.65) 100%), url('/darkromancebg.png')",
+      backgroundSize: "cover",
+      backgroundPosition: "center top",
+      backgroundAttachment: "fixed"
     }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400;1,700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
         * { box-sizing: border-box; }
-        input::placeholder, textarea::placeholder { color: #3A3A3A; }
+        input::placeholder, textarea::placeholder { color: #585858; }
         input:focus, textarea:focus { border-color: #6B1E1E !important; outline: none; }
         @keyframes fadeUp {
           from { opacity: 0; transform: translateY(16px); }
           to { opacity: 1; transform: translateY(0); }
         }
         ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: #111; }
+        ::-webkit-scrollbar-track { background: #181818; }
         ::-webkit-scrollbar-thumb { background: #6B1E1E; border-radius: 2px; }
       `}</style>
 
       <GrainOverlay />
 
-      <div style={{ maxWidth: "420px", margin: "0 auto", padding: "0 20px 60px" }}>
+      <div style={{ maxWidth: "420px", margin: "0 auto", padding: "0 20px 60px", position: "relative", zIndex: 1 }}>
         <div style={{
           padding: "20px 0 16px", display: "flex", justifyContent: "space-between",
-          alignItems: "center", borderBottom: "1px solid #1A1A1A", marginBottom: "8px"
+          alignItems: "center", borderBottom: "1px solid #252525", marginBottom: "8px"
         }}>
           <Logo />
-          <span style={{ fontSize: "10px", color: "#3A3A3A", letterSpacing: "0.1em", fontFamily: "Georgia, serif", textTransform: "uppercase" }}>
+          <span style={{ fontSize: "10px", color: "#585858", letterSpacing: "0.1em", fontFamily: "Georgia, serif", textTransform: "uppercase" }}>
             {screen === "create" ? "Ride · Read" : screen === "link" ? "Ready" : screen === "recipient" ? "For you" : screen === "yes" ? "It's a date" : screen === "invalid" ? "" : ""}
           </span>
         </div>
@@ -91,12 +95,12 @@ export default function App() {
             <p style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "26px", color: "#E8E0D0", fontStyle: "italic", margin: "0 0 16px", lineHeight: 1.4 }}>
               This invitation is no longer valid.
             </p>
-            <p style={{ fontFamily: "'Crimson Text', Georgia, serif", fontSize: "16px", color: "#4A4A4A", lineHeight: 1.7, margin: "0 0 40px" }}>
+            <p style={{ fontFamily: "'Crimson Text', Georgia, serif", fontSize: "16px", color: "#707070", lineHeight: 1.7, margin: "0 0 40px" }}>
               The link may be incomplete or expired.<br />Ask the sender to share it again.
             </p>
             <button onClick={() => { window.location.hash = ""; setScreen("create"); }} style={{
-              background: "none", border: "1px solid #2A2A2A", borderRadius: "8px",
-              color: "#4A4A4A", fontFamily: "Georgia, serif", fontSize: "12px",
+              background: "none", border: "1px solid #383838", borderRadius: "8px",
+              color: "#707070", fontFamily: "Georgia, serif", fontSize: "12px",
               letterSpacing: "0.1em", textTransform: "uppercase", cursor: "pointer",
               padding: "14px 24px"
             }}>
@@ -105,9 +109,9 @@ export default function App() {
           </div>
         )}
 
-        <div style={{ textAlign: "center", marginTop: "48px", paddingTop: "24px", borderTop: "1px solid #1A1A1A" }}>
+        <div style={{ textAlign: "center", marginTop: "48px", paddingTop: "24px", borderTop: "1px solid #252525" }}>
           <p style={{ fontSize: "16px", margin: "0 0 6px", opacity: 0.3 }}>🏍️ 📖</p>
-          <p style={{ fontSize: "10px", letterSpacing: "0.14em", color: "#2A2A2A", fontFamily: "Georgia, serif", textTransform: "uppercase", margin: 0 }}>
+          <p style={{ fontSize: "10px", letterSpacing: "0.14em", color: "#505050", fontFamily: "Georgia, serif", textTransform: "uppercase", margin: 0 }}>
             Ride & Read — An intellectual pursuit on two wheels
           </p>
         </div>

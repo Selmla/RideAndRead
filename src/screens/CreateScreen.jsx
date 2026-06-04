@@ -38,15 +38,15 @@ const CreateScreen = ({ onNext }) => {
   };
 
   const inputStyle = (err) => ({
-    width: "100%", padding: "14px 16px", background: "#111",
-    border: `1px solid ${err ? "#8B2020" : "#2A2A2A"}`, borderRadius: "8px",
+    width: "100%", padding: "14px 16px", background: "#181818",
+    border: `1px solid ${err ? "#8B2020" : "#383838"}`, borderRadius: "8px",
     color: "#E8E0D0", fontFamily: "'Crimson Text', Georgia, serif", fontSize: "17px",
     outline: "none", boxSizing: "border-box", transition: "border-color 0.2s",
     WebkitAppearance: "none"
   });
 
   const labelStyle = {
-    display: "block", fontSize: "10px", letterSpacing: "0.14em", color: "#6B1E1E",
+    display: "block", fontSize: "10px", letterSpacing: "0.14em", color: "#C4956A",
     fontFamily: "Georgia, serif", textTransform: "uppercase", marginBottom: "8px"
   };
 
@@ -56,12 +56,12 @@ const CreateScreen = ({ onNext }) => {
         <p style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "32px", color: "#E8E0D0", margin: "0 0 8px", lineHeight: 1.2 }}>
           Send a Request
         </p>
-        <p style={{ fontFamily: "'Crimson Text', Georgia, serif", fontSize: "16px", color: "#7A6A5A", fontStyle: "italic", margin: 0 }}>
+        <p style={{ fontFamily: "'Crimson Text', Georgia, serif", fontSize: "16px", color: "#8A7A6A", fontStyle: "italic", margin: 0 }}>
           Ink your intentions. Seal the destination.
         </p>
       </div>
 
-      <div style={{ background: "rgba(20,16,12,0.8)", border: "1px solid #1E1E1E", borderRadius: "16px", padding: "28px 24px", display: "flex", flexDirection: "column", gap: "20px" }}>
+      <div style={{ background: "rgba(24,20,16,0.9)", border: "1px solid #2A2A2A", borderRadius: "16px", padding: "28px 24px", display: "flex", flexDirection: "column", gap: "20px" }}>
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
           <div>
@@ -80,8 +80,8 @@ const CreateScreen = ({ onNext }) => {
           <label style={labelStyle}>Your phone number</label>
           <input placeholder="+46 70 000 00 00" type="tel" value={form.phone} onChange={e => set("phone", e.target.value)}
             style={inputStyle(errors.phone)} />
-          <p style={{ fontSize: "12px", color: "#4A4A4A", fontFamily: "'Crimson Text', Georgia, serif", margin: "6px 0 0", fontStyle: "italic" }}>
-            So they can SMS you their answer
+          <p style={{ fontSize: "12px", color: "#686868", fontFamily: "'Crimson Text', Georgia, serif", margin: "6px 0 0", fontStyle: "italic" }}>
+            So they can reach you with their answer
           </p>
         </div>
 
@@ -90,7 +90,7 @@ const CreateScreen = ({ onNext }) => {
           <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
             {["First choice", "Second choice", "Third choice"].map((placeholder, i) => (
               <div key={i} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <span style={{ fontSize: "11px", color: "#4A4A4A", width: "12px", fontFamily: "Georgia, serif" }}>{i + 1}</span>
+                <span style={{ fontSize: "11px", color: "#686868", width: "12px", fontFamily: "Georgia, serif" }}>{i + 1}</span>
                 <input type="date" value={form.dates[i]} min={today} onChange={e => setDate(i, e.target.value)}
                   style={{ ...inputStyle(i === 0 && errors.dates), flex: 1, colorScheme: "dark" }} />
               </div>
@@ -105,13 +105,13 @@ const CreateScreen = ({ onNext }) => {
         </div>
 
         <div>
-          <label style={labelStyle}>Choose our adventure <span style={{ color: "#4A4A4A", textTransform: "none", letterSpacing: 0 }}>— select up to 5</span></label>
+          <label style={labelStyle}>Choose our adventure <span style={{ color: "#686868", textTransform: "none", letterSpacing: 0 }}>— select up to 5</span></label>
           <ActivityDropdown selected={form.activities} onChange={v => set("activities", v)} />
           {errors.activities && <p style={{ fontSize: "12px", color: "#8B2020", margin: "6px 0 0", fontFamily: "Georgia, serif" }}>Please select at least one activity</p>}
         </div>
 
         <div>
-          <label style={labelStyle}>A message for them <span style={{ color: "#4A4A4A", textTransform: "none", letterSpacing: 0 }}>— optional</span></label>
+          <label style={labelStyle}>A message for them <span style={{ color: "#686868", textTransform: "none", letterSpacing: 0 }}>— optional</span></label>
           <textarea placeholder="Words from the soul..." value={form.message} onChange={e => set("message", e.target.value)}
             rows={4} style={{ ...inputStyle(false), resize: "none", lineHeight: 1.6 }} />
         </div>
@@ -129,7 +129,7 @@ const CreateScreen = ({ onNext }) => {
         >
           Seal with a kiss
         </button>
-        <p style={{ textAlign: "center", fontSize: "11px", color: "#3A3A3A", fontFamily: "Georgia, serif", letterSpacing: "0.1em", margin: "-12px 0 0", fontStyle: "italic" }}>
+        <p style={{ textAlign: "center", fontSize: "11px", color: "#585858", fontFamily: "Georgia, serif", letterSpacing: "0.1em", margin: "-12px 0 0", fontStyle: "italic" }}>
           A private arrangement between two souls
         </p>
       </div>

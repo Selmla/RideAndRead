@@ -40,7 +40,7 @@ const LinkScreen = ({ data, url, onBack }) => {
         </div>
       )}
 
-      <p style={{ fontSize: "11px", letterSpacing: "0.16em", color: "#6B1E1E", textTransform: "uppercase", fontFamily: "Georgia, serif", margin: "0 0 8px" }}>Consignment ready</p>
+      <p style={{ fontSize: "11px", letterSpacing: "0.16em", color: "#C4956A", textTransform: "uppercase", fontFamily: "Georgia, serif", margin: "0 0 8px" }}>Consignment ready</p>
       <p style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "30px", color: "#E8E0D0", margin: "0 0 32px", lineHeight: 1.2 }}>Your request is ready.</p>
 
       <div style={{
@@ -70,8 +70,8 @@ const LinkScreen = ({ data, url, onBack }) => {
           </button>
           <button onClick={copy} style={{
             width: "100%", padding: "14px", background: "transparent",
-            border: `1px solid ${copied ? "#4A8A4A" : "#2A2A2A"}`, borderRadius: "8px",
-            color: copied ? "#8ACA8A" : "#5A5A5A", fontFamily: "Georgia, serif", fontSize: "12px",
+            border: `1px solid ${copied ? "#4A8A4A" : "#383838"}`, borderRadius: "8px",
+            color: copied ? "#8ACA8A" : "#707070", fontFamily: "Georgia, serif", fontSize: "12px",
             letterSpacing: "0.14em", textTransform: "uppercase", cursor: "pointer",
             transition: "all 0.3s", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px"
           }}>
@@ -93,20 +93,20 @@ const LinkScreen = ({ data, url, onBack }) => {
         </button>
       )}
 
-      <p style={{ fontSize: "14px", color: "#5A5A5A", fontFamily: "'Crimson Text', Georgia, serif", fontStyle: "italic", lineHeight: 1.6, margin: "0 0 24px" }}>
-        Share it through your preferred silent channel.<br />Their answer will arrive as an SMS.
+      <p style={{ fontSize: "14px", color: "#707070", fontFamily: "'Crimson Text', Georgia, serif", fontStyle: "italic", lineHeight: 1.6, margin: "0 0 24px" }}>
+        Share it through your preferred silent channel.<br />Their answer will arrive as a reply.
       </p>
 
-      <p style={{ fontSize: "11px", color: "#3A3A3A", fontFamily: "Georgia, serif", letterSpacing: "0.08em", background: "rgba(107,30,30,0.1)", border: "1px solid rgba(107,30,30,0.2)", borderRadius: "6px", padding: "10px 14px", lineHeight: 1.6 }}>
-        📱 Works best on mobile — the SMS reply requires a phone
+      <p style={{ fontSize: "11px", color: "#585858", fontFamily: "Georgia, serif", letterSpacing: "0.08em", background: "rgba(107,30,30,0.1)", border: "1px solid rgba(107,30,30,0.2)", borderRadius: "6px", padding: "10px 14px", lineHeight: 1.6 }}>
+        📱 Works best on mobile — the reply requires a phone
       </p>
 
-      <p style={{ fontSize: "11px", color: "#3A3A3A", fontFamily: "Georgia, serif", letterSpacing: "0.08em", background: "#0D0D0D", border: "1px solid #1E1E1E", borderRadius: "6px", padding: "10px 14px", lineHeight: 1.6, marginTop: "10px" }}>
+      <p style={{ fontSize: "11px", color: "#585858", fontFamily: "Georgia, serif", letterSpacing: "0.08em", background: "#181818", border: "1px solid #2A2A2A", borderRadius: "6px", padding: "10px 14px", lineHeight: 1.6, marginTop: "10px" }}>
         🔒 This link contains your phone number — only share it directly with {data.to}
       </p>
 
       <button onClick={onBack} style={{
-        background: "none", border: "none", color: "#4A4A4A", fontFamily: "Georgia, serif",
+        background: "none", border: "none", color: "#686868", fontFamily: "Georgia, serif",
         fontSize: "12px", letterSpacing: "0.1em", textTransform: "uppercase", cursor: "pointer",
         display: "flex", alignItems: "center", gap: "8px", margin: "24px auto 0"
       }}>
