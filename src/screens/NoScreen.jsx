@@ -1,9 +1,16 @@
+const canNativeShare = typeof navigator !== "undefined" && !!navigator.share;
+
 const NoScreen = ({ data }) => {
-  const sendSMS = () => {
-    const msg = encodeURIComponent(`Not this time — but some stories take time to begin. — ${data.to}`);
-    const phone = data.phone.replace(/\s+/g, "");
-    const separator = /android/i.test(navigator.userAgent) ? "?" : "&";
-    window.location.href = `sms:${phone}${separator}body=${msg}`;
+  const replyText = `Not this time — but some stories take time to begin. — ${data.to}`;
+
+  const sendReply = () => {
+    if (canNativeShare) {
+      navigator.share({ text: replyText }).catch(() => {});
+    } else {
+      const phone = data.phone.replace(/\s+/g, "");
+      const separator = /android/i.test(navigator.userAgent) ? "?" : "&";
+      window.location.href = `sms:${phone}${separator}body=${encodeURIComponent(replyText)}`;
+    }
   };
 
   return (
@@ -21,14 +28,14 @@ const NoScreen = ({ data }) => {
           Let them know
         </p>
         <p style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "15px", color: "#5A5A5A", fontStyle: "italic", lineHeight: 1.6, margin: "0 0 16px" }}>
-          "Not this time — but some stories take time to begin. — {data.to}"
+          "{replyText}"
         </p>
-        <button onClick={sendSMS} style={{
+        <button onClick={sendReply} style={{
           width: "100%", padding: "14px", background: "transparent", border: "1px solid #2A2A2A",
           borderRadius: "6px", color: "#5A5A5A", fontFamily: "Georgia, serif", fontSize: "11px",
           letterSpacing: "0.14em", textTransform: "uppercase", cursor: "pointer"
         }}>
-          📱 Send SMS to {data.from}
+          {canNativeShare ? "↗ Send reply" : `📱 Send SMS to ${data.from}`}
         </button>
       </div>
     </div>

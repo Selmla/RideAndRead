@@ -1,5 +1,7 @@
 import { generateICS } from "../utils.js";
 
+const canNativeShare = typeof navigator !== "undefined" && !!navigator.share;
+
 const YesScreen = ({ data, date, activity }) => {
   const formatDate = (dateStr) => {
     if (!dateStr) return "";
@@ -7,11 +9,16 @@ const YesScreen = ({ data, date, activity }) => {
     return d.toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" });
   };
 
-  const sendSMS = () => {
-    const msg = encodeURIComponent(`I'm in! I'd love to ${activity.label.toLowerCase()} on ${formatDate(date)}. — ${data.to}`);
-    const phone = data.phone.replace(/\s+/g, "");
-    const separator = /android/i.test(navigator.userAgent) ? "?" : "&";
-    window.location.href = `sms:${phone}${separator}body=${msg}`;
+  const replyText = `I'm in! I'd love to ${activity.label.toLowerCase()} on ${formatDate(date)}. — ${data.to}`;
+
+  const sendReply = () => {
+    if (canNativeShare) {
+      navigator.share({ text: replyText }).catch(() => {});
+    } else {
+      const phone = data.phone.replace(/\s+/g, "");
+      const separator = /android/i.test(navigator.userAgent) ? "?" : "&";
+      window.location.href = `sms:${phone}${separator}body=${encodeURIComponent(replyText)}`;
+    }
   };
 
   const downloadICS = () => {
@@ -49,18 +56,20 @@ const YesScreen = ({ data, date, activity }) => {
           Send your answer
         </p>
         <p style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "15px", color: "#C4B89A", fontStyle: "italic", lineHeight: 1.6, margin: "0 0 16px" }}>
-          "I'm in! I'd love to {activity.label.toLowerCase()} on {formatDate(date)}. — {data.to}"
+          "{replyText}"
         </p>
-        <button onClick={sendSMS} style={{
+        <button onClick={sendReply} style={{
           width: "100%", padding: "14px", background: "#6B1E1E", border: "none", borderRadius: "6px",
           color: "#E8E0D0", fontFamily: "Georgia, serif", fontSize: "11px", letterSpacing: "0.14em",
           textTransform: "uppercase", cursor: "pointer"
         }}>
-          📱 Send SMS to {data.from}
+          {canNativeShare ? "↗ Send reply" : `📱 Send SMS to ${data.from}`}
         </button>
-        <p style={{ fontSize: "11px", color: "#3A3A3A", fontFamily: "Georgia, serif", margin: "10px 0 0", textAlign: "center", fontStyle: "italic" }}>
-          Works best on mobile
-        </p>
+        {!canNativeShare && (
+          <p style={{ fontSize: "11px", color: "#3A3A3A", fontFamily: "Georgia, serif", margin: "10px 0 0", textAlign: "center", fontStyle: "italic" }}>
+            Works best on mobile
+          </p>
+        )}
       </div>
     </div>
   );
