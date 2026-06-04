@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+const canNativeShare = typeof navigator !== "undefined" && !!navigator.share;
+
 const LinkScreen = ({ data, url, onBack }) => {
   const [copied, setCopied] = useState(false);
 
@@ -13,6 +15,14 @@ const LinkScreen = ({ data, url, onBack }) => {
       success();
     };
     navigator.clipboard ? navigator.clipboard.writeText(url).then(success).catch(fallback) : fallback();
+  };
+
+  const share = () => {
+    navigator.share({
+      title: "Someone wants to take you on a date 🖤",
+      text: `${data.from} wants to take you on a date — open to find out more.`,
+      url,
+    }).catch(() => {});
   };
 
   return (
@@ -29,6 +39,7 @@ const LinkScreen = ({ data, url, onBack }) => {
           ✓ Link copied to clipboard
         </div>
       )}
+
       <p style={{ fontSize: "11px", letterSpacing: "0.16em", color: "#6B1E1E", textTransform: "uppercase", fontFamily: "Georgia, serif", margin: "0 0 8px" }}>Consignment ready</p>
       <p style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "30px", color: "#E8E0D0", margin: "0 0 32px", lineHeight: 1.2 }}>Your request is ready.</p>
 
@@ -45,17 +56,42 @@ const LinkScreen = ({ data, url, onBack }) => {
         <p style={{ fontSize: "11px", letterSpacing: "0.14em", color: "#9A8A7A", fontFamily: "Georgia, serif", textTransform: "uppercase", margin: 0 }}>The night awaits</p>
       </div>
 
-      <button onClick={copy} style={{
-        width: "100%", padding: "18px", background: copied ? "#2A4A2A" : "#6B1E1E",
-        border: `1px solid ${copied ? "#4A8A4A" : "#6B1E1E"}`, borderRadius: "8px",
-        color: "#E8E0D0", fontFamily: "Georgia, serif", fontSize: "12px",
-        letterSpacing: "0.14em", textTransform: "uppercase", cursor: "pointer",
-        transition: "all 0.3s", marginBottom: "16px", display: "flex",
-        alignItems: "center", justifyContent: "center", gap: "10px"
-      }}>
-        <span style={{ fontSize: "16px" }}>{copied ? "✓" : "⎘"}</span>
-        {copied ? "Copied!" : "Copy link"}
-      </button>
+      {canNativeShare ? (
+        <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "16px" }}>
+          <button onClick={share} style={{
+            width: "100%", padding: "18px", background: "#6B1E1E",
+            border: "1px solid #6B1E1E", borderRadius: "8px",
+            color: "#E8E0D0", fontFamily: "Georgia, serif", fontSize: "12px",
+            letterSpacing: "0.14em", textTransform: "uppercase", cursor: "pointer",
+            transition: "all 0.3s", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px"
+          }}>
+            <span style={{ fontSize: "16px" }}>↗</span>
+            Send invitation
+          </button>
+          <button onClick={copy} style={{
+            width: "100%", padding: "14px", background: "transparent",
+            border: `1px solid ${copied ? "#4A8A4A" : "#2A2A2A"}`, borderRadius: "8px",
+            color: copied ? "#8ACA8A" : "#5A5A5A", fontFamily: "Georgia, serif", fontSize: "12px",
+            letterSpacing: "0.14em", textTransform: "uppercase", cursor: "pointer",
+            transition: "all 0.3s", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px"
+          }}>
+            <span style={{ fontSize: "14px" }}>{copied ? "✓" : "⎘"}</span>
+            {copied ? "Copied!" : "Copy link instead"}
+          </button>
+        </div>
+      ) : (
+        <button onClick={copy} style={{
+          width: "100%", padding: "18px", background: copied ? "#2A4A2A" : "#6B1E1E",
+          border: `1px solid ${copied ? "#4A8A4A" : "#6B1E1E"}`, borderRadius: "8px",
+          color: "#E8E0D0", fontFamily: "Georgia, serif", fontSize: "12px",
+          letterSpacing: "0.14em", textTransform: "uppercase", cursor: "pointer",
+          transition: "all 0.3s", marginBottom: "16px", display: "flex",
+          alignItems: "center", justifyContent: "center", gap: "10px"
+        }}>
+          <span style={{ fontSize: "16px" }}>{copied ? "✓" : "⎘"}</span>
+          {copied ? "Copied!" : "Copy link"}
+        </button>
+      )}
 
       <p style={{ fontSize: "14px", color: "#5A5A5A", fontFamily: "'Crimson Text', Georgia, serif", fontStyle: "italic", lineHeight: 1.6, margin: "0 0 24px" }}>
         Share it through your preferred silent channel.<br />Their answer will arrive as an SMS.
@@ -72,7 +108,7 @@ const LinkScreen = ({ data, url, onBack }) => {
       <button onClick={onBack} style={{
         background: "none", border: "none", color: "#4A4A4A", fontFamily: "Georgia, serif",
         fontSize: "12px", letterSpacing: "0.1em", textTransform: "uppercase", cursor: "pointer",
-        marginTop: "24px", display: "flex", alignItems: "center", gap: "8px", margin: "24px auto 0"
+        display: "flex", alignItems: "center", gap: "8px", margin: "24px auto 0"
       }}>
         ← Return to form
       </button>
