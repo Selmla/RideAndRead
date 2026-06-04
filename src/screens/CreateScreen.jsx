@@ -2,6 +2,8 @@ import { useState } from "react";
 import ActivityDropdown from "../components/ActivityDropdown.jsx";
 import { encodeRequest } from "../utils.js";
 
+const today = new Date().toISOString().split("T")[0];
+
 const CreateScreen = ({ onNext }) => {
   const [form, setForm] = useState({
     from: "", to: "", phone: "", dates: ["", "", ""], time: "", activities: [], message: ""
@@ -89,7 +91,7 @@ const CreateScreen = ({ onNext }) => {
             {["First choice", "Second choice", "Third choice"].map((placeholder, i) => (
               <div key={i} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                 <span style={{ fontSize: "11px", color: "#4A4A4A", width: "12px", fontFamily: "Georgia, serif" }}>{i + 1}</span>
-                <input type="date" value={form.dates[i]} onChange={e => setDate(i, e.target.value)}
+                <input type="date" value={form.dates[i]} min={today} onChange={e => setDate(i, e.target.value)}
                   style={{ ...inputStyle(i === 0 && errors.dates), flex: 1, colorScheme: "dark" }} />
               </div>
             ))}
