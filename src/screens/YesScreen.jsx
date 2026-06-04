@@ -10,7 +10,8 @@ const YesScreen = ({ data, date, activity }) => {
   const sendSMS = () => {
     const msg = encodeURIComponent(`I'm in! I'd love to ${activity.label.toLowerCase()} on ${formatDate(date)}. — ${data.to}`);
     const phone = data.phone.replace(/\s+/g, "");
-    window.location.href = `sms:${phone}&body=${msg}`;
+    const separator = /android/i.test(navigator.userAgent) ? "?" : "&";
+    window.location.href = `sms:${phone}${separator}body=${msg}`;
   };
 
   const downloadICS = () => {
