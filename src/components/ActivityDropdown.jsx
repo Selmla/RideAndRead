@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ACTIVITIES, VIBE_LABELS } from "../constants.js";
 
 const ActivityDropdown = ({ selected, onChange }) => {
   const [open, setOpen] = useState(false);
-  const ref = useState(() => ({ current: null }))[0];
+  const ref = useRef(null);
   const grouped = ["booktok", "biker", "both"].map(v => ({
     vibe: v, items: ACTIVITIES.filter(a => a.vibe === v)
   }));
