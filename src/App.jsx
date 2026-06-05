@@ -49,7 +49,7 @@ export default function App() {
         setInviteId(id);
         setIsRecipient(true);
         setScreen("recipient");
-      }).catch(() => setScreen("invalid"));
+      }).catch(() => setScreen("error"));
     } else {
       // Legacy base64 invitation
       const data = decodeRequest(hash);
@@ -188,6 +188,26 @@ export default function App() {
             <p style={{ fontFamily: "'Crimson Text', Georgia, serif", fontSize: "16px", color: "#707070", lineHeight: 1.7, margin: 0 }}>
               {requestData?.to} has passed this time.<br />Some stories take time to begin.
             </p>
+          </div>
+        )}
+
+        {screen === "error" && (
+          <div style={{ animation: "fadeUp 0.5s ease both", textAlign: "center", padding: "60px 0" }}>
+            <div style={{ fontSize: "32px", marginBottom: "24px", opacity: 0.4 }}>📡</div>
+            <p style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "26px", color: "#E8E0D0", fontStyle: "italic", margin: "0 0 16px", lineHeight: 1.4 }}>
+              Something went wrong.
+            </p>
+            <p style={{ fontFamily: "'Crimson Text', Georgia, serif", fontSize: "16px", color: "#707070", lineHeight: 1.7, margin: "0 0 40px" }}>
+              Check your connection and try again.
+            </p>
+            <button onClick={() => window.location.reload()} style={{
+              background: "none", border: "1px solid #383838", borderRadius: "8px",
+              color: "#707070", fontFamily: "Georgia, serif", fontSize: "12px",
+              letterSpacing: "0.1em", textTransform: "uppercase", cursor: "pointer",
+              padding: "14px 24px"
+            }}>
+              Try again
+            </button>
           </div>
         )}
 

@@ -12,6 +12,7 @@ const CreateScreen = ({ onNext }) => {
   });
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
 
   const set = (key, val) => setForm(f => ({ ...f, [key]: val }));
   const setDate = (i, val) => {
@@ -51,6 +52,7 @@ const CreateScreen = ({ onNext }) => {
       onNext({ data, inviteId });
     } catch {
       setSubmitting(false);
+      setSubmitError(true);
     }
   };
 
@@ -136,11 +138,18 @@ const CreateScreen = ({ onNext }) => {
           onMouseDown={e => { if (!submitting) e.target.style.transform = "scale(0.99)"; }}
           onMouseUp={e => e.target.style.transform = "scale(1)"}
         >
-          {submitting ? "Sealing..." : "Seal with a kiss"}
+          {submitting ? "Sealing..." : submitError ? "Try again" : "Seal with a kiss"}
         </button>
-        <p style={{ textAlign: "center", fontSize: "11px", color: "#585858", fontFamily: "Georgia, serif", letterSpacing: "0.1em", margin: "-12px 0 0", fontStyle: "italic" }}>
-          A private arrangement between two souls
-        </p>
+        {submitError && (
+          <p style={{ textAlign: "center", fontSize: "12px", color: "#8B2020", fontFamily: "Georgia, serif", margin: "-12px 0 0" }}>
+            Something went wrong — check your connection and try again.
+          </p>
+        )}
+        {!submitError && (
+          <p style={{ textAlign: "center", fontSize: "11px", color: "#585858", fontFamily: "Georgia, serif", letterSpacing: "0.1em", margin: "-12px 0 0", fontStyle: "italic" }}>
+            A private arrangement between two souls
+          </p>
+        )}
       </div>
     </div>
   );
