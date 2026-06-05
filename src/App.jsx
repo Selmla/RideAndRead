@@ -1,25 +1,57 @@
 import { useState, useEffect } from "react";
+import { doc, getDoc, updateDoc, onSnapshot } from "firebase/firestore";
+import { db } from "./firebase.js";
 import { decodeRequest } from "./utils.js";
+import { ACTIVITIES } from "./constants.js";
 import GrainOverlay from "./components/GrainOverlay.jsx";
 import Logo from "./components/Logo.jsx";
 import StepDots from "./components/StepDots.jsx";
 import CreateScreen from "./screens/CreateScreen.jsx";
 import LinkScreen from "./screens/LinkScreen.jsx";
 import RecipientScreen from "./screens/RecipientScreen.jsx";
-import YesScreen from "./screens/YesScreen.jsx";
+import ConfirmedScreen from "./screens/ConfirmedScreen.jsx";
 import NoScreen from "./screens/NoScreen.jsx";
 
 export default function App() {
   const [screen, setScreen] = useState("create");
   const [requestData, setRequestData] = useState(null);
   const [shareUrl, setShareUrl] = useState("");
+  const [inviteId, setInviteId] = useState(null);
   const [chosenDate, setChosenDate] = useState(null);
   const [chosenActivity, setChosenActivity] = useState(null);
   const [isRecipient, setIsRecipient] = useState(false);
 
+  // On load: detect link type from URL hash
   useEffect(() => {
     const hash = window.location.hash.slice(1);
-    if (hash) {
+    if (!hash) return;
+
+    if (hash.startsWith("inv_")) {
+      // Firebase-based invitation
+      const id = hash.slice(4);
+      getDoc(doc(db, "invitations", id)).then((snap) => {
+        if (!snap.exists()) { setScreen("invalid"); return; }
+        const d = snap.data();
+        if (d.expiresAt && d.expiresAt.toDate() < new Date()) { setScreen("invalid"); return; }
+        if (d.status === "accepted") {
+          setRequestData(d);
+          setChosenDate(d.chosenDate);
+          setChosenActivity(ACTIVITIES.find(a => a.id === d.chosenActivityId));
+          setScreen("confirmed");
+          return;
+        }
+        if (d.status === "declined") {
+          setRequestData(d);
+          setScreen("declined");
+          return;
+        }
+        setRequestData(d);
+        setInviteId(id);
+        setIsRecipient(true);
+        setScreen("recipient");
+      }).catch(() => setScreen("invalid"));
+    } else {
+      // Legacy base64 invitation
       const data = decodeRequest(hash);
       if (data) {
         setRequestData(data);
@@ -31,17 +63,55 @@ export default function App() {
     }
   }, []);
 
-  const handleCreate = ({ data, url }) => {
+  // Sender: listen for recipient's response in real time
+  useEffect(() => {
+    if (!inviteId || isRecipient) return;
+    const unsubscribe = onSnapshot(doc(db, "invitations", inviteId), (snap) => {
+      if (!snap.exists()) return;
+      const d = snap.data();
+      if (d.status === "accepted") {
+        setChosenDate(d.chosenDate);
+        setChosenActivity(ACTIVITIES.find(a => a.id === d.chosenActivityId));
+        setScreen("confirmed");
+      }
+      if (d.status === "declined") {
+        setScreen("declined");
+      }
+    });
+    return unsubscribe;
+  }, [inviteId, isRecipient]);
+
+  const handleCreate = ({ data, inviteId: id }) => {
     setRequestData(data);
-    setShareUrl(url);
+    setInviteId(id);
+    setShareUrl(`${window.location.origin}${window.location.pathname}#inv_${id}`);
     setScreen("link");
   };
 
-  const handleYes = (date, activity) => {
+  const handleYes = async (date, activity) => {
     setChosenDate(date);
     setChosenActivity(activity);
-    setScreen("yes");
+    if (inviteId) {
+      await updateDoc(doc(db, "invitations", inviteId), {
+        status: "accepted",
+        chosenDate: date,
+        chosenActivityId: activity.id
+      });
+    }
+    setScreen("confirmed");
   };
+
+  const handleNo = async () => {
+    if (inviteId) {
+      await updateDoc(doc(db, "invitations", inviteId), { status: "declined" });
+    }
+    setScreen("no");
+  };
+
+  const headerLabel = {
+    create: "Ride · Read", link: "Waiting", recipient: "For you",
+    confirmed: "It's a date", no: "", declined: "", invalid: ""
+  }[screen] ?? "";
 
   return (
     <div style={{
@@ -76,19 +146,32 @@ export default function App() {
         }}>
           <Logo />
           <span style={{ fontSize: "10px", color: "#585858", letterSpacing: "0.1em", fontFamily: "Georgia, serif", textTransform: "uppercase" }}>
-            {screen === "create" ? "Ride · Read" : screen === "link" ? "Ready" : screen === "recipient" ? "For you" : screen === "yes" ? "It's a date" : screen === "invalid" ? "" : ""}
+            {headerLabel}
           </span>
         </div>
 
-        {!isRecipient && screen !== "create" && (
-          <StepDots current={screen === "link" ? 1 : 0} total={2} />
+        {!isRecipient && screen === "link" && (
+          <StepDots current={1} total={2} />
         )}
 
         {screen === "create" && <CreateScreen onNext={handleCreate} />}
         {screen === "link" && <LinkScreen data={requestData} url={shareUrl} onBack={() => setScreen("create")} />}
-        {screen === "recipient" && <RecipientScreen data={requestData} onYes={handleYes} onNo={() => setScreen("no")} />}
-        {screen === "yes" && <YesScreen data={requestData} date={chosenDate} activity={chosenActivity} />}
-        {screen === "no" && <NoScreen data={requestData} />}
+        {screen === "recipient" && <RecipientScreen data={requestData} onYes={handleYes} onNo={handleNo} />}
+        {screen === "confirmed" && <ConfirmedScreen data={requestData} date={chosenDate} activity={chosenActivity} />}
+        {screen === "no" && <NoScreen senderName={requestData?.from} />}
+
+        {screen === "declined" && (
+          <div style={{ animation: "fadeUp 0.5s ease both", textAlign: "center", padding: "60px 0" }}>
+            <div style={{ fontSize: "32px", marginBottom: "24px", opacity: 0.4 }}>🖤</div>
+            <p style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "26px", color: "#E8E0D0", fontStyle: "italic", margin: "0 0 16px", lineHeight: 1.4 }}>
+              Not this chapter.
+            </p>
+            <p style={{ fontFamily: "'Crimson Text', Georgia, serif", fontSize: "16px", color: "#707070", lineHeight: 1.7, margin: 0 }}>
+              {requestData?.to} has passed this time.<br />Some stories take time to begin.
+            </p>
+          </div>
+        )}
+
         {screen === "invalid" && (
           <div style={{ animation: "fadeUp 0.5s ease both", textAlign: "center", padding: "60px 0" }}>
             <div style={{ fontSize: "32px", marginBottom: "24px", opacity: 0.3 }}>📖</div>

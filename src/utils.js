@@ -1,3 +1,8 @@
+export function generateInviteId() {
+  const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+  return Array.from({ length: 8 }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
+}
+
 export function encodeRequest(data) {
   try {
     return btoa(unescape(encodeURIComponent(JSON.stringify(data))));

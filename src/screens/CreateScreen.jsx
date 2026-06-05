@@ -1,14 +1,17 @@
 import { useState } from "react";
+import { doc, setDoc, serverTimestamp, Timestamp } from "firebase/firestore";
+import { db } from "../firebase.js";
 import ActivityDropdown from "../components/ActivityDropdown.jsx";
-import { encodeRequest } from "../utils.js";
+import { generateInviteId } from "../utils.js";
 
 const today = new Date().toISOString().split("T")[0];
 
 const CreateScreen = ({ onNext }) => {
   const [form, setForm] = useState({
-    from: "", to: "", phone: "", dates: ["", "", ""], time: "", activities: [], message: ""
+    from: "", to: "", dates: ["", "", ""], time: "", activities: [], message: ""
   });
   const [errors, setErrors] = useState({});
+  const [submitting, setSubmitting] = useState(false);
 
   const set = (key, val) => setForm(f => ({ ...f, [key]: val }));
   const setDate = (i, val) => {
@@ -21,7 +24,6 @@ const CreateScreen = ({ onNext }) => {
     const e = {};
     if (!form.from.trim()) e.from = true;
     if (!form.to.trim()) e.to = true;
-    if (!form.phone.trim()) e.phone = true;
     if (!form.dates.some(d => d)) e.dates = true;
     if (!form.time) e.time = true;
     if (form.activities.length < 1) e.activities = true;
@@ -29,12 +31,27 @@ const CreateScreen = ({ onNext }) => {
     return Object.keys(e).length === 0;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!validate()) return;
+    setSubmitting(true);
     const data = { ...form, dates: form.dates.filter(Boolean) };
-    const encoded = encodeRequest(data);
-    const url = `${window.location.origin}${window.location.pathname}#${encoded}`;
-    onNext({ data, url });
+    const inviteId = generateInviteId();
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + 30);
+
+    try {
+      await setDoc(doc(db, "invitations", inviteId), {
+        ...data,
+        status: "pending",
+        chosenDate: null,
+        chosenActivityId: null,
+        createdAt: serverTimestamp(),
+        expiresAt: Timestamp.fromDate(expiresAt)
+      });
+      onNext({ data, inviteId });
+    } catch {
+      setSubmitting(false);
+    }
   };
 
   const inputStyle = (err) => ({
@@ -77,15 +94,6 @@ const CreateScreen = ({ onNext }) => {
         </div>
 
         <div>
-          <label style={labelStyle}>Your phone number</label>
-          <input placeholder="+46 70 000 00 00" type="tel" value={form.phone} onChange={e => set("phone", e.target.value)}
-            style={inputStyle(errors.phone)} />
-          <p style={{ fontSize: "12px", color: "#686868", fontFamily: "'Crimson Text', Georgia, serif", margin: "6px 0 0", fontStyle: "italic" }}>
-            So they can reach you with their answer
-          </p>
-        </div>
-
-        <div>
           <label style={labelStyle}>Proposed dates — pick up to three</label>
           <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
             {["First choice", "Second choice", "Third choice"].map((placeholder, i) => (
@@ -116,18 +124,19 @@ const CreateScreen = ({ onNext }) => {
             rows={4} style={{ ...inputStyle(false), resize: "none", lineHeight: 1.6 }} />
         </div>
 
-        <button onClick={handleSubmit} style={{
-          width: "100%", padding: "18px", background: "#6B1E1E", border: "none", borderRadius: "8px",
-          color: "#E8E0D0", fontFamily: "Georgia, serif", fontSize: "12px", letterSpacing: "0.16em",
-          textTransform: "uppercase", cursor: "pointer", marginTop: "8px",
+        <button onClick={handleSubmit} disabled={submitting} style={{
+          width: "100%", padding: "18px", background: submitting ? "#3A1010" : "#6B1E1E",
+          border: "none", borderRadius: "8px", color: "#E8E0D0", fontFamily: "Georgia, serif",
+          fontSize: "12px", letterSpacing: "0.16em", textTransform: "uppercase",
+          cursor: submitting ? "default" : "pointer", marginTop: "8px",
           transition: "background 0.2s, transform 0.1s",
         }}
-          onMouseEnter={e => e.target.style.background = "#7D2222"}
-          onMouseLeave={e => e.target.style.background = "#6B1E1E"}
-          onMouseDown={e => e.target.style.transform = "scale(0.99)"}
+          onMouseEnter={e => { if (!submitting) e.target.style.background = "#7D2222"; }}
+          onMouseLeave={e => { if (!submitting) e.target.style.background = "#6B1E1E"; }}
+          onMouseDown={e => { if (!submitting) e.target.style.transform = "scale(0.99)"; }}
           onMouseUp={e => e.target.style.transform = "scale(1)"}
         >
-          Seal with a kiss
+          {submitting ? "Sealing..." : "Seal with a kiss"}
         </button>
         <p style={{ textAlign: "center", fontSize: "11px", color: "#585858", fontFamily: "Georgia, serif", letterSpacing: "0.1em", margin: "-12px 0 0", fontStyle: "italic" }}>
           A private arrangement between two souls

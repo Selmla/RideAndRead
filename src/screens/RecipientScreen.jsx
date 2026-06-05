@@ -45,7 +45,7 @@ const RecipientScreen = ({ data, onYes, onNo }) => {
       {data.message && (
         <div style={{
           background: "#181818", border: "1px solid #2E2E2E", borderRadius: "12px",
-          padding: "22px 20px", marginBottom: "28px", position: "relative"
+          padding: "22px 20px", marginBottom: "28px"
         }}>
           <p style={{ fontSize: "10px", letterSpacing: "0.14em", color: "#C4956A", textTransform: "uppercase", fontFamily: "Georgia, serif", margin: "0 0 12px" }}>
             A message from {data.from}

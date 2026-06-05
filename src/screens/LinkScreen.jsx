@@ -44,29 +44,34 @@ const LinkScreen = ({ data, url, onBack }) => {
       <p style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "30px", color: "#E8E0D0", margin: "0 0 32px", lineHeight: 1.2 }}>Your request is ready.</p>
 
       <div style={{
-        background: "#F0EBE0", borderRadius: "12px", padding: "48px 32px", margin: "0 0 24px",
+        background: "#F0EBE0", borderRadius: "12px", padding: "40px 32px 32px", margin: "0 0 24px",
         position: "relative", overflow: "hidden"
       }}>
         <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 20% 80%, rgba(107,30,30,0.06) 0%, transparent 60%)", pointerEvents: "none" }} />
         <div style={{ fontSize: "28px", marginBottom: "20px", opacity: 0.4 }}>📖</div>
-        <p style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "24px", color: "#1A1210", lineHeight: 1.4, margin: "0 0 24px", fontStyle: "italic" }}>
+        <p style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "24px", color: "#1A1210", lineHeight: 1.4, margin: "0 0 16px", fontStyle: "italic" }}>
           {data.from} wants to<br />take you on a date.
         </p>
         <div style={{ width: "40px", height: "1px", background: "#9A8A7A", margin: "0 auto 16px" }} />
-        <p style={{ fontSize: "11px", letterSpacing: "0.14em", color: "#9A8A7A", fontFamily: "Georgia, serif", textTransform: "uppercase", margin: 0 }}>The night awaits</p>
+
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
+          <span style={{ display: "inline-block", width: "8px", height: "8px", borderRadius: "50%", background: "#6B1E1E", animation: "pulse 1.8s ease-in-out infinite" }} />
+          <p style={{ fontSize: "11px", letterSpacing: "0.12em", color: "#7A6A5A", fontFamily: "Georgia, serif", textTransform: "uppercase", margin: 0 }}>
+            Waiting for {data.to}
+          </p>
+        </div>
+        <style>{`@keyframes pulse { 0%,100%{opacity:0.3;transform:scale(0.8)} 50%{opacity:1;transform:scale(1)} }`}</style>
       </div>
 
       {canNativeShare ? (
         <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "16px" }}>
           <button onClick={share} style={{
-            width: "100%", padding: "18px", background: "#6B1E1E",
-            border: "1px solid #6B1E1E", borderRadius: "8px",
-            color: "#E8E0D0", fontFamily: "Georgia, serif", fontSize: "12px",
+            width: "100%", padding: "18px", background: "#6B1E1E", border: "1px solid #6B1E1E",
+            borderRadius: "8px", color: "#E8E0D0", fontFamily: "Georgia, serif", fontSize: "12px",
             letterSpacing: "0.14em", textTransform: "uppercase", cursor: "pointer",
             transition: "all 0.3s", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px"
           }}>
-            <span style={{ fontSize: "16px" }}>↗</span>
-            Send invitation
+            <span style={{ fontSize: "16px" }}>↗</span> Send invitation
           </button>
           <button onClick={copy} style={{
             width: "100%", padding: "14px", background: "transparent",
@@ -93,16 +98,8 @@ const LinkScreen = ({ data, url, onBack }) => {
         </button>
       )}
 
-      <p style={{ fontSize: "14px", color: "#707070", fontFamily: "'Crimson Text', Georgia, serif", fontStyle: "italic", lineHeight: 1.6, margin: "0 0 24px" }}>
-        Share it through your preferred silent channel.<br />Their answer will arrive as a reply.
-      </p>
-
-      <p style={{ fontSize: "11px", color: "#585858", fontFamily: "Georgia, serif", letterSpacing: "0.08em", background: "rgba(107,30,30,0.1)", border: "1px solid rgba(107,30,30,0.2)", borderRadius: "6px", padding: "10px 14px", lineHeight: 1.6 }}>
-        📱 Works best on mobile — the reply requires a phone
-      </p>
-
-      <p style={{ fontSize: "11px", color: "#585858", fontFamily: "Georgia, serif", letterSpacing: "0.08em", background: "#181818", border: "1px solid #2A2A2A", borderRadius: "6px", padding: "10px 14px", lineHeight: 1.6, marginTop: "10px" }}>
-        🔒 This link contains your phone number — only share it directly with {data.to}
+      <p style={{ fontSize: "11px", color: "#585858", fontFamily: "Georgia, serif", letterSpacing: "0.08em", background: "#181818", border: "1px solid #2A2A2A", borderRadius: "6px", padding: "10px 14px", lineHeight: 1.6, marginBottom: "10px" }}>
+        🔒 This link contains private details — only share it directly with {data.to}
       </p>
 
       <button onClick={onBack} style={{
