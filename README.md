@@ -2,27 +2,27 @@
 
 A private date-request app for the person who reads between rides and rides between chapters.
 
-Send a beautifully crafted invitation link to someone. They pick a date and an adventure. You get an SMS.
+Send a beautifully crafted invitation. They pick a date and an adventure. You both find out at the same time.
 
 ---
 
 ## What it does
 
 **Sender flow**
-1. Fill in your name, their name, and your phone number
-2. Propose up to three dates and a time
-3. Choose up to 5 activities — from bookshop visits to night rides
-4. Optionally add a personal message
-5. Get a shareable link to send through any channel
+1. Fill in your name, their name, proposed dates and time
+2. Choose up to 5 activities — from bookshop visits to night rides
+3. Optionally add a personal message
+4. Share the link through any channel
 
 **Recipient flow**
 1. Opens the link — no account needed
 2. Sees the invitation and any personal message
 3. Picks a date and an activity
-4. Downloads a calendar invite (.ics)
-5. Sends an SMS reply directly from their phone
+4. Taps "I'm in" — the sender's screen updates instantly
 
-All data lives in the URL — no backend, no database, no tracking.
+**Both**
+- See the confirmed date and activity together
+- Download a calendar invite (.ics)
 
 ---
 
@@ -40,7 +40,8 @@ All data lives in the URL — no backend, no database, no tracking.
 
 - [React 19](https://react.dev)
 - [Vite 8](https://vite.dev)
-- No backend — state is encoded in the URL hash
+- [Firebase Firestore](https://firebase.google.com) — real-time invitation state
+- Deployed on [Vercel](https://vercel.com)
 
 ---
 
@@ -53,14 +54,28 @@ npm run dev
 
 Open [http://localhost:5173](http://localhost:5173).
 
+### Environment variables
+
+Create a `.env.local` file in the project root:
+
+```
+VITE_FIREBASE_API_KEY=
+VITE_FIREBASE_AUTH_DOMAIN=
+VITE_FIREBASE_PROJECT_ID=
+VITE_FIREBASE_STORAGE_BUCKET=
+VITE_FIREBASE_MESSAGING_SENDER_ID=
+VITE_FIREBASE_APP_ID=
+```
+
 ---
 
 ## Project structure
 
 ```
 src/
+├── firebase.js           # Firebase init
 ├── constants.js          # Activities and vibe labels
-├── utils.js              # URL encoding and ICS generation
+├── utils.js              # ICS generation and invite ID
 ├── components/
 │   ├── ActivityDropdown.jsx
 │   ├── GrainOverlay.jsx
@@ -70,7 +85,7 @@ src/
 │   ├── CreateScreen.jsx
 │   ├── LinkScreen.jsx
 │   ├── RecipientScreen.jsx
-│   ├── YesScreen.jsx
+│   ├── ConfirmedScreen.jsx
 │   └── NoScreen.jsx
 └── App.jsx
 ```
