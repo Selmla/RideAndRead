@@ -117,11 +117,7 @@ export default function App() {
     <div style={{
       minHeight: "100vh", color: "#E8E0D0",
       fontFamily: "'Crimson Text', Georgia, serif",
-      background: "#0D0D0D",
-      backgroundImage: "linear-gradient(rgba(8,4,4,0.72) 0%, rgba(8,4,4,0.65) 100%), url('/darkromancebg.png')",
-      backgroundSize: "cover",
-      backgroundPosition: "center top",
-      backgroundAttachment: "fixed"
+      background: "#0D0D0D"
     }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400;1,700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
@@ -137,6 +133,15 @@ export default function App() {
         ::-webkit-scrollbar-thumb { background: #6B1E1E; border-radius: 2px; }
       `}</style>
 
+      <div style={{
+        position: "fixed", inset: 0, zIndex: 0,
+        backgroundImage: "url('/darkromancebg.png')",
+        backgroundSize: "cover", backgroundPosition: "center top"
+      }} />
+      <div style={{
+        position: "fixed", inset: 0, zIndex: 0,
+        background: "linear-gradient(rgba(8,4,4,0.72) 0%, rgba(8,4,4,0.65) 100%)"
+      }} />
       <GrainOverlay />
 
       <div style={{ maxWidth: "420px", margin: "0 auto", padding: "0 20px 60px", position: "relative", zIndex: 1 }}>
