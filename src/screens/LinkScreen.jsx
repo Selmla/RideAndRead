@@ -2,7 +2,7 @@ import { useState } from "react";
 
 const canNativeShare = typeof navigator !== "undefined" && !!navigator.share;
 
-const LinkScreen = ({ data, url, onBack }) => {
+const LinkScreen = ({ data, url, onCancel }) => {
   const [copied, setCopied] = useState(false);
 
   const copy = () => {
@@ -102,12 +102,12 @@ const LinkScreen = ({ data, url, onBack }) => {
         🔒 This link contains private details — only share it directly with {data.to}
       </p>
 
-      <button onClick={onBack} style={{
-        background: "none", border: "none", color: "#686868", fontFamily: "Georgia, serif",
-        fontSize: "12px", letterSpacing: "0.1em", textTransform: "uppercase", cursor: "pointer",
+      <button onClick={onCancel} style={{
+        background: "none", border: "none", color: "#484848", fontFamily: "Georgia, serif",
+        fontSize: "11px", letterSpacing: "0.1em", textTransform: "uppercase", cursor: "pointer",
         display: "flex", alignItems: "center", gap: "8px", margin: "24px auto 0"
       }}>
-        ← Return to form
+        Cancel invitation
       </button>
     </div>
   );
