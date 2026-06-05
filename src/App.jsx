@@ -13,7 +13,7 @@ import ConfirmedScreen from "./screens/ConfirmedScreen.jsx";
 import NoScreen from "./screens/NoScreen.jsx";
 
 export default function App() {
-  const [screen, setScreen] = useState("create");
+  const [screen, setScreen] = useState(window.location.hash ? "loading" : "create");
   const [requestData, setRequestData] = useState(null);
   const [shareUrl, setShareUrl] = useState("");
   const [inviteId, setInviteId] = useState(null);
@@ -157,6 +157,20 @@ export default function App() {
 
         {!isRecipient && screen === "link" && (
           <StepDots current={1} total={2} />
+        )}
+
+        {screen === "loading" && (
+          <div style={{ animation: "fadeUp 0.5s ease both", textAlign: "center", padding: "80px 0" }}>
+            <div style={{ marginBottom: "24px" }}>
+              <span style={{
+                display: "inline-block", width: "10px", height: "10px", borderRadius: "50%",
+                background: "#6B1E1E", animation: "pulse 1.8s ease-in-out infinite"
+              }} />
+            </div>
+            <p style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "20px", color: "#C4956A", fontStyle: "italic", margin: 0 }}>
+              Opening the envelope...
+            </p>
+          </div>
         )}
 
         {screen === "create" && <CreateScreen onNext={handleCreate} />}
